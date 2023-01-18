@@ -3,6 +3,7 @@ import { createMachine } from "./create.ts";
 
 function getTestMachine() {
     const machine = createMachine({
+        type: "D",
         initial: "OFF",
         states: {
             ON: {
@@ -23,6 +24,7 @@ function getTestMachine() {
 
 function getCounterMachine() {
     return createMachine({
+        type: "ND",
         context: {
             count: 0,
         },
