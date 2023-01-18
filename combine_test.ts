@@ -4,6 +4,7 @@ import { combineMachines } from "./combine.ts";
 
 function getToggleMachine() {
   const machine = createMachine({
+    type: "D",
     initial: "OFF",
     states: {
       ON: {
@@ -24,6 +25,7 @@ function getToggleMachine() {
 
 function getLoadingMachine() {
   const machine = createMachine({
+    type: "D",
     initial: "idle",
     states: {
       idle: {
@@ -48,6 +50,7 @@ const emptyState = {
 
 function getEventMachine() {
   const machine = createMachine({
+    type: "D",
     initial: "open",
     states: {
       open: {
