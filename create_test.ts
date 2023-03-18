@@ -13,7 +13,7 @@ function getTestMachine() {
             },
             OFF: {
                 on: {
-                    toggle: () => "ON",
+                    toggle: () => ({ target: "ON" }),
                 },
             },
         },
@@ -44,12 +44,14 @@ function getCounterMachine() {
                     inc: ({ context }) => {
                         const { count } = context.get();
                         context.set({ count: count + 1 });
-                        return "not_empty";
+                        return { target: "not_empty" };
                     },
                     dec: ({ context }) => {
                         const { count } = context.get();
                         context.set({ count: count - 1 });
-                        return context.get().count === 0 ? "empty" : "not_empty";
+                        return context.get().count === 0
+                            ? "empty"
+                            : { target: "not_empty" };
                     },
                 },
             },

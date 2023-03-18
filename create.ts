@@ -15,7 +15,7 @@ type DFA<S extends Obj> = {
     states: {
         [K in keyof S]: {
             [ON in keyof S[K]]: {
-                [E in keyof S[K][ON]]: () => keyof S;
+                [E in keyof S[K][ON]]: () => { target: keyof S } | keyof S;
             };
         };
     };
@@ -28,7 +28,7 @@ type NDFA<S extends Obj, C extends Obj> = {
     states: {
         [K in keyof S]: {
             [ON in keyof S[K]]: {
-                [E in keyof S[K][ON]]: (args: TransitionArgs<C>) => keyof S;
+                [E in keyof S[K][ON]]: (args: TransitionArgs<C>) => { target: keyof S } | keyof S;
             };
         };
     };
@@ -50,14 +50,21 @@ type ExtractEvents<M extends MachineDefinition<any, any>> = {
     [K in keyof M["states"]]: keyof M["states"][K]["on"];
 }[keyof M["states"]];
 
+const isString = (v: unknown): v is string => typeof v === 'string';
+
 function createDFA<S extends Obj, C extends Obj>(machine: DFA<S>): Machine<S> {
     let state = machine.initial;
 
     function send(action: { event: ExtractEvents<MachineDefinition<S, C>> }) {
-        // @ts-ignore
+        // @ts-ignore correctness ensure in function signature
         const transitionFn = machine["states"][state]["on"][action.event as any];
         if (transitionFn !== undefined) {
-            state = transitionFn();
+            const newState = transitionFn();
+            if (isString(newState)) {
+                state = newState;
+            } else {
+                state = newState.target;
+            }
         }
     }
 
@@ -88,10 +95,15 @@ function createNDFA<S extends Obj, C extends Obj>(machine: NDFA<S, C>): Machine<
     };
 
     function send(action: { event: ExtractEvents<MachineDefinition<S, C>> }) {
-        // @ts-ignore
+        // @ts-ignore correctness ensure in function signature
         const transitionFn = machine["states"][state]["on"][action.event as any];
         if (transitionFn !== undefined) {
-            state = transitionFn({ context });
+            const newState = transitionFn({ context });
+            if (isString(newState)) {
+                state = newState;
+            } else {
+                state = newState.target;
+            }
         }
     }
 
