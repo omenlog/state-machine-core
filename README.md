@@ -109,8 +109,7 @@ const counterMachine = createMachine({
             empty: {
                 on: {
                     INC: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count + 1 });
+                        context.count++;
                         return "not_empty";
                     },
                 },
@@ -118,14 +117,12 @@ const counterMachine = createMachine({
             not_empty: {
                 on: {
                     INC: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count + 1 });
+                        context.count++;
                         return { target: "not_empty" };
                     },
                     DEC: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count - 1 });
-                        return context.get().count === 0
+                        context.count--;
+                        return context.count === 0
                             ? "empty"
                             : { target: "not_empty" };
                     },
