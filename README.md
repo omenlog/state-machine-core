@@ -5,7 +5,8 @@
 To create a new machine we should use `createMachine` function:
 
 ```ts
-import { createMachine } from '@machine/core';
+// DENO import
+import { createMachine } from "https://deno.land/x/state_machine_core/mod.ts";
 ```
 
 Example:
@@ -109,8 +110,7 @@ const counterMachine = createMachine({
             empty: {
                 on: {
                     INC: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count + 1 });
+                        context.count++;
                         return "not_empty";
                     },
                 },
@@ -118,14 +118,12 @@ const counterMachine = createMachine({
             not_empty: {
                 on: {
                     INC: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count + 1 });
+                        context.count++;
                         return { target: "not_empty" };
                     },
                     DEC: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count - 1 });
-                        return context.get().count === 0
+                        context.count--;
+                        return context.count === 0
                             ? "empty"
                             : { target: "not_empty" };
                     },
@@ -144,7 +142,8 @@ depends on the `context` data to decide which is the new machine state.
 # Machines combination
 
 ```ts
-import { combineMachines } from '@machine/core';
+// DENO import
+import { combineMachine } from "https://deno.land/x/state_machine_core/mod.ts";
 ```
 
 Is possible combine two or more different state machines to create a new one composed from them.
