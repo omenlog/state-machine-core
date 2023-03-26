@@ -5,7 +5,8 @@
 To create a new machine we should use `createMachine` function:
 
 ```ts
-import { createMachine } from '@machine/core';
+// DENO import
+import { createMachine } from "https://deno.land/x/state_machine_core/mod.ts";
 ```
 
 Example:
@@ -141,7 +142,8 @@ depends on the `context` data to decide which is the new machine state.
 # Machines combination
 
 ```ts
-import { combineMachines } from '@machine/core';
+// DENO import
+import { createMachine } from "https://deno.land/x/state_machine_core/mod.ts";
 ```
 
 Is possible combine two or more different state machines to create a new one composed from them.
