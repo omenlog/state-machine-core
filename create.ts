@@ -1,12 +1,7 @@
 type Obj = Record<string, unknown>;
 
-type Context<C extends Obj> = {
-    get: () => Readonly<C>;
-    set: (arg: Partial<C>) => void;
-};
-
 type TransitionArgs<C extends Obj> = {
-    context: Context<C>;
+    context: C;
 };
 
 type DFA<S extends Obj> = {
@@ -50,7 +45,7 @@ type ExtractEvents<M extends MachineDefinition<any, any>> = {
     [K in keyof M["states"]]: keyof M["states"][K]["on"];
 }[keyof M["states"]];
 
-const isString = (v: unknown): v is string => typeof v === 'string';
+const isString = (v: unknown): v is string => typeof v === "string";
 
 function createDFA<S extends Obj, C extends Obj>(machine: DFA<S>): Machine<S> {
     let state = machine.initial;
@@ -80,19 +75,7 @@ function createDFA<S extends Obj, C extends Obj>(machine: DFA<S>): Machine<S> {
 
 function createNDFA<S extends Obj, C extends Obj>(machine: NDFA<S, C>): Machine<S> {
     let state = machine.initial;
-    let contextData = machine.context;
-
-    const context: Context<C> = {
-        set(newProps) {
-            contextData = {
-                ...contextData,
-                ...newProps
-            }
-        },
-        get() {
-            return Object.freeze(contextData);
-        }
-    };
+    let context = {...machine.context};
 
     function send(action: { event: ExtractEvents<MachineDefinition<S, C>> }) {
         // @ts-ignore correctness ensure in function signature
