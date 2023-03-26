@@ -33,8 +33,7 @@ function getCounterMachine() {
             empty: {
                 on: {
                     inc: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count + 1 });
+                        context.count++;
                         return "not_empty";
                     },
                 },
@@ -42,14 +41,12 @@ function getCounterMachine() {
             not_empty: {
                 on: {
                     inc: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count + 1 });
+                        context.count++;
                         return { target: "not_empty" };
                     },
                     dec: ({ context }) => {
-                        const { count } = context.get();
-                        context.set({ count: count - 1 });
-                        return context.get().count === 0
+                        context.count--;
+                        return context.count === 0
                             ? "empty"
                             : { target: "not_empty" };
                     },
