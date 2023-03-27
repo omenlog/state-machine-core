@@ -19,7 +19,7 @@ jobs:
         run: deno run -A scripts/build_npm.ts ${{ github.ref_name }}
       - name: Publish package
         run: |
-          cd npm/ &&
+          cd npm
           npm publish --access=public
         env:
            NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
