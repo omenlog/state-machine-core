@@ -143,7 +143,7 @@ depends on the `context` data to decide which is the new machine state.
 
 ```ts
 // DENO import
-import { combineMachine } from "https://deno.land/x/state_machine_core/mod.ts";
+import { combineMachines } from "https://deno.land/x/state_machine_core/mod.ts";
 ```
 
 Is possible combine two or more different state machines to create a new one composed from them.
