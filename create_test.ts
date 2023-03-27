@@ -46,9 +46,7 @@ function getCounterMachine() {
                     },
                     dec: ({ context }) => {
                         context.count--;
-                        return context.count === 0
-                            ? "empty"
-                            : { target: "not_empty" };
+                        return context.count === 0 ? "empty" : { target: "not_empty" };
                     },
                 },
             },

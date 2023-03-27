@@ -1,4 +1,13 @@
-# type-machine
+A finite state machine implemented in typescript
+
+Features: 
+
+- React integration(coming soon).
+- 100% typesafe without any manual casting needed.
+- States and events automatic inferred from machine definition.
+- Simple API.
+- Composability through machine composition.
+
 
 # Machine creation
 
@@ -7,6 +16,9 @@ To create a new machine we should use `createMachine` function:
 ```ts
 // DENO import
 import { createMachine } from "https://deno.land/x/state_machine_core/mod.ts";
+
+// NODE import
+import { createMachine } from "@state-machine/core";
 ```
 
 Example:
@@ -144,6 +156,9 @@ depends on the `context` data to decide which is the new machine state.
 ```ts
 // DENO import
 import { combineMachines } from "https://deno.land/x/state_machine_core/mod.ts";
+
+// NODE import
+import { combineMachines } from "@state-machine/core";
 ```
 
 Is possible combine two or more different state machines to create a new one composed from them.
