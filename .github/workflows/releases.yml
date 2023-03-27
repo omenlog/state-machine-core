@@ -1,0 +1,26 @@
+name: publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Setup Deno 
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: "1.32.1"
+      - name: Create npm package
+        run: deno run -A scripts/build_npm.ts ${{ github.ref_name }}
+      - name: Publish package
+        run: |
+          cd npm/ &&
+          npm publish --access=public
+        env:
+           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        
